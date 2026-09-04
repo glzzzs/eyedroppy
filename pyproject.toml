@@ -19,3 +19,7 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/eyedroppy"]
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["eyedroppy"]
