@@ -2,7 +2,7 @@ import sys
 import os
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap, QCursor
+from PyQt6.QtGui import QBrush, QPainter, QPixmap
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout
 
 class EyeDroppyApp(QMainWindow):
