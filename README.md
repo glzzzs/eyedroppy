@@ -1,2 +1,2 @@
 # eyedroppy
-Eyedropper for picking palettes from images 👁️🎨
+Eyedropper for picking palettes from images 👁️ :droplet:
