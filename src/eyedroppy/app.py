@@ -35,15 +35,47 @@ class EyeDroppyApp(QMainWindow):
         urls = event.mimeData().urls()
         if urls:
             file_path = urls[0].toLocalFile()
-
-            pixmap = QPixmap(file_path).scaled(
-                self.imageDropFrame.size(),
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation,
-            )
-
-            self.imageLabel.setPixmap(pixmap)
+            self.handle_file(file_path)
             event.acceptProposedAction()
+
+    def keyPressEvent(self, event):
+        if event.modifiers() == Qt.KeyboardModifier.ControlModifier and event.key() == Qt.Key.Key_V:
+            self.handle_paste()
+        else:
+            super().keyPressEvent(event)
+
+    def handle_paste(self):
+        clipboard = QApplication.clipboard()
+        mime_data = clipboard.mimeData()
+
+        if mime_data.hasImage():
+            pixmap = clipboard.pixmap()
+            if not pixmap.isNull():
+                self.set_image(pixmap)
+                return
+
+        if mime_data.hasUrls():
+            file_path = mime_data.urls()[0].toLocalFile()
+            self.handle_file(file_path)
+            return
+
+        if mime_data.hasText():
+            self.setText(f"Pasted Text:\n{mime_data.text()}")
+            return
+
+    def handle_file(self, file_path):
+        if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+            self.set_image(QPixmap(file_path))
+        else:
+            self.setText(f"Dropped/Pasted/Loaded File:\n{file_path}")
+
+    def set_image(self, pixmap: QPixmap):
+        pixmap = pixmap.scaled(
+                        self.imageDropFrame.size(),
+                        Qt.AspectRatioMode.KeepAspectRatio,
+                        Qt.TransformationMode.SmoothTransformation,
+                    )
+        self.imageLabel.setPixmap(pixmap)
 
 def main() -> int:
     app = QApplication(sys.argv)
