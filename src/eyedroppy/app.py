@@ -2,16 +2,18 @@ import sys
 import os
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QBrush, QPainter, QPixmap
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout
+from PyQt6.QtGui import QColor, QCursor, QPixmap, QPainter
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout
 
 class EyeDroppyApp(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        main_ui_path = os.path.join(script_dir, "../../ui/main.ui")
+        script_path = os.path.dirname(os.path.abspath(__file__))
+        main_ui_path = os.path.join(script_path, "../../ui/main.ui")
         uic.loadUi(main_ui_path, self)
+
+        # self.set_eyedropper_cursor()
 
         self.imageDropFrame.dragEnterEvent = self.frame_drag_enter
         self.imageDropFrame.dropEvent = self.frame_drop
@@ -26,6 +28,21 @@ class EyeDroppyApp(QMainWindow):
         self.imageLabel = QLabel()
         self.imageLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.imageLabel)
+
+    def set_eyedropper_cursor(self):
+        script_path = os.path.dirname(os.path.abspath(__file__))
+        cursor_path = os.path.join(script_path, "../../ui/icons/eyedropper.svg")
+        
+        cursor_x = 0
+        cursor_y = 32
+        cursor_pixmap = QPixmap(cursor_path)
+        cursor_pixmap = cursor_pixmap.scaled(
+            32, 
+            32, 
+            Qt.AspectRatioMode.KeepAspectRatio, 
+            Qt.TransformationMode.SmoothTransformation)
+        custom_cursor = QCursor(cursor_pixmap, cursor_x, cursor_y)
+        self.setCursor(custom_cursor)
 
     def frame_drag_enter(self, event):
         if event.mimeData().hasUrls():
