@@ -5,6 +5,9 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor, QPixmap, QPainter
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout
 
+from eyedroppy.core.palette import Palette
+from eyedroppy.ui.palette_widget import PaletteWidget
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -13,6 +16,10 @@ class MainWindow(QMainWindow):
         main_ui_path = os.path.join(script_path, "main.ui")
         uic.loadUi(main_ui_path, self)
 
+        self.palette = Palette(rows=4, columns=4)
+        self.palette_widget = PaletteWidget(palette=self.palette)
+        self.palette_widget.tile_clicked.connect(self.on_tile_clicked)
+        
         self.set_eyedropper_cursor()
 
         self.imageDropFrame.dragEnterEvent = self.frame_drag_enter
@@ -28,6 +35,10 @@ class MainWindow(QMainWindow):
         self.imageLabel = QLabel()
         self.imageLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.imageLabel)
+
+    def on_tile_clicked(self, row, col):
+        # Controller action: Update model, then tell widget to re-draw
+        print(f"Tile clicked at row {row}, col {col}")
 
     def set_eyedropper_cursor(self):
         script_path = os.path.dirname(os.path.abspath(__file__))
