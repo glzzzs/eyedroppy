@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         main_ui_path = os.path.join(script_path, "main.ui")
         uic.loadUi(main_ui_path, self)
 
-        self.palette = Palette(rows=4, columns=4)
+        self.palette = Palette()
         self.palette_widget = PaletteWidget(palette=self.palette)
         self.palette_widget.tile_clicked.connect(self.on_tile_clicked)
         

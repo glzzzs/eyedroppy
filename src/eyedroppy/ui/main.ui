@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>450</height>
+    <width>450</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,30 +42,13 @@
    <widget class="PaletteWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>20</y>
-      <width>231</width>
-      <height>171</height>
+      <x>0</x>
+      <y>450</y>
+      <width>451</width>
+      <height>111</height>
      </rect>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>33</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionOpen"/>
-   </widget>
-   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
