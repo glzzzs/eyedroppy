@@ -49,4 +49,5 @@ class PaletteWidget(QWidget):
                 self.selected_tile = (row, col)
                 self.tile_clicked.emit(row, col)
                 self.update()
+
         super().mousePressEvent(event)

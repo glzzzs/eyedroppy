@@ -9,18 +9,18 @@ from eyedroppy.core.palette import Palette
 from eyedroppy.ui.palette_widget import PaletteWidget
 
 class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         script_path = os.path.dirname(os.path.abspath(__file__))
         main_ui_path = os.path.join(script_path, "main.ui")
         uic.loadUi(main_ui_path, self)
 
         self.palette = Palette()
-        self.palette_widget = PaletteWidget(palette=self.palette)
+        self.palette_widget.palette = self.palette
         self.palette_widget.tile_clicked.connect(self.on_tile_clicked)
-        
-        self.set_eyedropper_cursor()
+
+        self.create_eyedropper_cursor()
 
         self.imageDropFrame.dragEnterEvent = self.frame_drag_enter
         self.imageDropFrame.dropEvent = self.frame_drop
@@ -37,10 +37,9 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.imageLabel)
 
     def on_tile_clicked(self, row, col):
-        # Controller action: Update model, then tell widget to re-draw
-        print(f"Tile clicked at row {row}, col {col}")
+        self.setCursor(self.eyedropper)
 
-    def set_eyedropper_cursor(self):
+    def create_eyedropper_cursor(self):
         script_path = os.path.dirname(os.path.abspath(__file__))
         cursor_path = os.path.join(script_path, "../assets/icons/eyedropper.svg")
         
@@ -52,8 +51,8 @@ class MainWindow(QMainWindow):
             32, 
             Qt.AspectRatioMode.KeepAspectRatio, 
             Qt.TransformationMode.SmoothTransformation)
-        custom_cursor = QCursor(cursor_pixmap, cursor_x, cursor_y)
-        self.setCursor(custom_cursor)
+        
+        self.eyedropper = QCursor(cursor_pixmap, cursor_x, cursor_y)
 
     def frame_drag_enter(self, event):
         if event.mimeData().hasUrls():

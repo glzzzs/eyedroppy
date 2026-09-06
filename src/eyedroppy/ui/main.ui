@@ -39,7 +39,7 @@
      <enum>QFrame::Shadow::Raised</enum>
     </property>
    </widget>
-   <widget class="PaletteWidget" name="widget" native="true">
+   <widget class="PaletteWidget" name="palette_widget" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
