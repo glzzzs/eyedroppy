@@ -1,6 +1,7 @@
 import sys
 import os
 from PyQt6 import uic
+from PyQt6 import QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor, QPixmap, QPainter
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout
@@ -19,6 +20,8 @@ class MainWindow(QMainWindow):
         self.palette = Palette()
         self.palette_widget.palette = self.palette
         self.palette_widget.tile_clicked.connect(self.on_tile_clicked)
+
+        self.image = None
 
         self.create_eyedropper_cursor()
 
@@ -71,12 +74,20 @@ class MainWindow(QMainWindow):
         else:
             super().keyPressEvent(event)
 
+    def mousePressEvent(self, event):
+        widget_at = self.childAt(event.position().toPoint())
+        if self.image and event.button() == Qt.MouseButton.LeftButton:
+            if isinstance(widget_at, QLabel):
+                pos = event.position()
+                print(f"Color: {self.image.pixel(int(pos.x()), int(pos.y()))}")
+
     def handle_paste(self):
         clipboard = QApplication.clipboard()
         mime_data = clipboard.mimeData()
 
         if mime_data.hasImage():
             pixmap = clipboard.pixmap()
+            self.image = pixmap.toImage()
             if not pixmap.isNull():
                 self.set_image(pixmap)
                 return
@@ -97,6 +108,7 @@ class MainWindow(QMainWindow):
             print(f"Dropped/Pasted/Loaded File: {file_path}")
 
     def set_image(self, pixmap: QPixmap):
+        self.image = pixmap.toImage()
         pixmap = pixmap.scaled(
                         self.imageDropFrame.size(),
                         Qt.AspectRatioMode.KeepAspectRatio,

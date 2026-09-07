@@ -10,10 +10,10 @@ class PaletteWidget(QWidget):
     def __init__(self, palette=None, parent=None):
         super().__init__(parent)
         self.palette = palette if palette is not None else Palette()
-        self.tile_width = 221
+        self.tile_width = 110
         self.tile_height = 32
-        self.tile_spacing_x = 4
-        self.tile_spacing_y = 4
+        self.tile_spacing_x = 1
+        self.tile_spacing_y = 1
         self.tile_rounding = 0
         self.margin_x = 4
         self.margin_y = 4
