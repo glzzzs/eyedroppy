@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt, QRectF, pyqtSignal
 from PyQt6.QtGui import QBrush, QColor, QPainter, QPen
 from PyQt6.QtWidgets import QWidget
+from numpy import uint
 
 from eyedroppy.core.palette import Palette
 
@@ -19,6 +20,11 @@ class PaletteWidget(QWidget):
         self.margin_y = 4
         self.selected_tile = None
         self.setMinimumSize(200, 450)
+
+        self.palette.changed.connect(self.on_palette_changed)
+
+    def on_palette_changed(self, row: uint, column: uint, color: QColor):
+        self.update()
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -42,8 +48,8 @@ class PaletteWidget(QWidget):
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.position()
-            col = int((pos.x() - self.margin_x) // (self.tile_width + self.tile_spacing_x))
-            row = int((pos.y() - self.margin_y) // (self.tile_height + self.tile_spacing_y))
+            col = uint((pos.x() - self.margin_x) // (self.tile_width + self.tile_spacing_x))
+            row = uint((pos.y() - self.margin_y) // (self.tile_height + self.tile_spacing_y))
 
             if 0 <= row < self.palette.rows and 0 <= col < self.palette.columns:
                 self.selected_tile = (row, col)

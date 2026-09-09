@@ -79,6 +79,7 @@ class MainWindow(QMainWindow):
         if self.image and event.button() == Qt.MouseButton.LeftButton:
             if isinstance(widget_at, QLabel):
                 pos = event.position()
+                self.palette.set_color(self.palette_widget.selected_tile[0], self.palette_widget.selected_tile[1], QColor(self.image.pixel(int(pos.x()), int(pos.y()))))
                 print(f"Color: {self.image.pixel(int(pos.x()), int(pos.y()))}")
 
     def handle_paste(self):
